@@ -1,0 +1,7 @@
+# Ensure consistent line endings for all text files on Windows
+* text eol=crlf
+
+# Specific rules for scripts
+/mvnw text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf  # Shell scripts should still use LF for compatibility with Unix systems
