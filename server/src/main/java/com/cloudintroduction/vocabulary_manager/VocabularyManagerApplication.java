@@ -8,6 +8,7 @@ public class VocabularyManagerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VocabularyManagerApplication.class, args);
+		System.out.println("Server started...");
 	}
 
 }
