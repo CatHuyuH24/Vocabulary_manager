@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Header, Footer } from './Components';
-import { OverviewVocabulary } from './Pages';
-import DetailVocabulary from './Pages/DetailVocabulary';
+import { OverviewVocabulary, DetailVocabulary } from './Pages';
 
 function App() {
 
   return (
-    <div className="xl:max-w-[1280px] w-full mx-auto border-gray">
+    <div className="xl:max-w-[1480px] w-full mx-auto border-gray bg-gradient-to-b from-[#90CAF9] to-[#E0E0E0]">
       <Router>
         <Header />
           <Routes>
