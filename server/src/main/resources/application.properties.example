@@ -1,7 +1,0 @@
-spring.application.name=vocabulary_manager
-spring.datasource.username=
-spring.datasource.password=
-spring.datasource.generate-unique-name=false
-spring.datasource.url=jdbc:postgresql://localhost:5432/vocabulary_manager
-spring.sql.init.mode=always
-server.port=
