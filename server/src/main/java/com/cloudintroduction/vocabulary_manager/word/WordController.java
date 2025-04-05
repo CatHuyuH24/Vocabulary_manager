@@ -90,4 +90,18 @@ public class WordController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating word.");
         }
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteWordById(@PathVariable int id) {
+        try {
+            wordRepository.deleteWordById(id);
+        } catch (WordNotFoundException e) {
+            logger.error("WordController: {}", e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DynamoDbException e) {
+            logger.error("WordController: Exception occurred while deleting word with id {}: {}", id, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting word.");
+        }
+    }
 }
