@@ -1,4 +1,4 @@
-package com.cloudintroduction.vocabulary_manager.words;
+package com.cloudintroduction.vocabulary_manager.word;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -142,10 +142,6 @@ public class WordRepository {
                     .tableName(TABLE_NAME)
                     .key(Map.of("id", AttributeValue.builder().n(String.valueOf(id)).build()))
                     .attributeUpdates(Map.of(
-                            "id",
-                            AttributeValueUpdate.builder()
-                                    .value(AttributeValue.builder().n(String.valueOf(newWord.id())).build())
-                                    .action(AttributeAction.PUT).build(),
                             "word",
                             AttributeValueUpdate.builder().value(AttributeValue.builder().s(newWord.word()).build())
                                     .action(AttributeAction.PUT).build(),

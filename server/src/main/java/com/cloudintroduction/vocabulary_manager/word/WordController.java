@@ -1,4 +1,4 @@
-package com.cloudintroduction.vocabulary_manager.words;
+package com.cloudintroduction.vocabulary_manager.word;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,9 +33,11 @@ public class WordController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
-    List<Word> getAllWords() {
+    List<WordDTO> getAllWords() {
         try {
-            return wordRepository.getAllWords();
+            return wordRepository.getAllWords().stream()
+                    .map(WordDTO::fromWord) // Convert Word to WordDTO
+                    .toList();
         } catch (DynamoDbException e) {
             logger.error("WordController: Exception occurred while fetching all words: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching all words.");
@@ -44,13 +46,13 @@ public class WordController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    Word getWordById(@PathVariable int id) {
+    WordDTO getWordById(@PathVariable int id) {
         try {
             Optional<Word> word = wordRepository.getWordById(id);
             if (word.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word with ID " + id + " not found.");
             } else {
-                return word.get();
+                return WordDTO.fromWord(word.get()); // Convert Word to WordDTO
             }
         } catch (DynamoDbException e) {
             logger.error("WordController: Exception occurred while fetching word with id {}: {}", id, e.getMessage());
@@ -60,9 +62,9 @@ public class WordController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void createNewWord(@RequestBody Word word) {
+    void createNewWord(@RequestBody WordDTO wordDTO) {
         try {
-            wordRepository.createWord(word);
+            wordRepository.createWord(wordDTO.toWord()); // Convert WordDTO to Word
         } catch (IllegalArgumentException e) {
             logger.error("WordController: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -73,34 +75,19 @@ public class WordController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    void deleteWordById(@PathVariable int id) {
-        try {
-            wordRepository.deleteWordById(id);
-        } catch (WordNotFoundException e) {
-            logger.error("WordController: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (DynamoDbException e) {
-            logger.error("WordController: Exception occurred while creating a new word: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating word.");
-        }
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public void updateWordById(@PathVariable int id, @RequestBody Word newWord) {
+    public void updateWordById(@PathVariable int id, @RequestBody WordDTO newWordDTO) {
         try {
-            wordRepository.updateWordById(id, newWord);
+            wordRepository.updateWordById(id, newWordDTO.toWord()); // Convert WordDTO to Word
         } catch (IllegalArgumentException e) {
             logger.error("WordController: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (WordNotFoundException e) {
             logger.error("WordController: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DynamoDbException e) {
-            logger.error("WordController: Exception occurred while creating a new word: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating word.");
+            logger.error("WordController: Exception occurred while updating word with id {}: {}", id, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating word.");
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package com.cloudintroduction.vocabulary_manager.words;
+package com.cloudintroduction.vocabulary_manager.word;
 
 public class WordNotFoundException extends Exception {
     WordNotFoundException() {
