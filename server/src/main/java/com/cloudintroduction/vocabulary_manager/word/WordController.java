@@ -64,7 +64,7 @@ public class WordController {
     @PostMapping("")
     void createNewWord(@RequestBody WordDTO wordDTO) {
         try {
-            wordRepository.createWord(wordDTO.toWord()); // Convert WordDTO to Word
+            wordRepository.createWord(wordDTO.toWordToBeCreated());
         } catch (IllegalArgumentException e) {
             logger.error("WordController: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());

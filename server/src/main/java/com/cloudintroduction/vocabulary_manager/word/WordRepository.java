@@ -73,15 +73,17 @@ public class WordRepository {
     void createWord(Word word) throws IllegalArgumentException {
 
         // Check if a word with the same ID already exists
-        var getItemRequest = GetItemRequest.builder()
-                .tableName(TABLE_NAME)
-                .key(Map.of("id", AttributeValue.builder().n(String.valueOf(word.id())).build()))
-                .build();
+        // var getItemRequest = GetItemRequest.builder()
+        // .tableName(TABLE_NAME)
+        // .key(Map.of("id",
+        // AttributeValue.builder().n(String.valueOf(word.id())).build()))
+        // .build();
         try {
-            var item = dynamoDbClient.getItem(getItemRequest).item();
-            if (!item.isEmpty()) {
-                throw new IllegalArgumentException("A word with ID " + word.id() + " already exists.");
-            }
+            // var item = dynamoDbClient.getItem(getItemRequest).item();
+            // if (!item.isEmpty()) {
+            // throw new IllegalArgumentException("A word with ID " + word.id() + " already
+            // exists.");
+            // }
 
             // Proceed to create the new word
             var putItemRequest = PutItemRequest.builder()
