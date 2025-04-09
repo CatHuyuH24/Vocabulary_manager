@@ -25,7 +25,7 @@ const OverviewVocabulary = () => {
   }, []);
 
   // Lưu số lượng từ vào localStorage
-  localStorage.setItem("Amount", words.length);
+  localStorage.setItem('Amount', words.length);
 
   const addWord = (newWord) => {
     setWords([...words, newWord]);
@@ -37,27 +37,28 @@ const OverviewVocabulary = () => {
       const lastModifiedDate = new Date(word.lastModified);
       const start = new Date(startDate).toLocaleDateString('en-GB'); // Chuyển sang DD/MM/YYYY
       const end = new Date(endDate).toLocaleDateString('en-GB'); // Chuyển sang DD/MM/YYYY
-  
-      console.log("Start Date:", start);
-      console.log("End Date:", end);
-  
+
+      console.log('Start Date:', start);
+      console.log('End Date:', end);
+
       // So sánh ngày (chỉ lấy phần ngày, không lấy giờ)
       return (
         lastModifiedDate.toLocaleDateString('en-GB') >= start &&
         lastModifiedDate.toLocaleDateString('en-GB') <= end
       );
     });
-  
+
     // Cập nhật danh sách từ vựng hiển thị
     setWords(filteredWords);
   };
 
   const handlePriorityFilter = () => {
     if (!priority) return;
-    if(priority == number("0"))
-      setWords(allWords);
+    if (priority == Number('0')) setWords(allWords);
 
-    const filteredWords = allWords.filter((word) => word.priority == Number(priority));
+    const filteredWords = allWords.filter(
+      (word) => word.priority == Number(priority)
+    );
     setWords(filteredWords);
   };
 
@@ -96,7 +97,7 @@ const OverviewVocabulary = () => {
           />
         </div>
 
-        <Button onClick={handleFilter} color="gray">
+        <Button onClick={handleFilter} color="purple">
           Filter By Date
         </Button>
 
@@ -111,7 +112,7 @@ const OverviewVocabulary = () => {
           <option value="3">Low</option>
         </select>
 
-        <Button onClick={handlePriorityFilter} color="gray">
+        <Button onClick={handlePriorityFilter} color="purple">
           Filter By Priority
         </Button>
       </div>

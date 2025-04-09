@@ -1,29 +1,51 @@
 import React, { useState } from "react";
 import Label from "./Label";
 import Button from "./Button";
+import { createWord } from "../Services";
 
 const DialogAddNew = ({ isOpen, onClose, onAdd }) => {
-  const [word, setWord] = useState("");
-  const [priority, setPriority] = useState("Medium");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState(Date.now());
-
-  const translateDate = (date) => {
-    const d = new Date(date);
-    return `${d.getFullYear()} - ${d.getMonth() + 1} - ${d.getDate()}`;
-  };
-  const handleSubmit = () => {
-    if (!word.trim()) return alert("Please enter a word.");
-
-    onAdd({
-      id: Date.now(),
-      word,
-      date: translateDate(date),
-      priority,
-      description,
+  const id = parseInt(localStorage.getItem("Amount"), 10) || 0;
+  // console.log(typeof(id));/
+    const [word, setWord] = useState({
+      id: id,
+      word: "",
+      description: "",
+      lastModified: "",
+      priority: "3",
     });
-    onClose(); // Đóng dialog sau khi thêm
-  };
+
+    function getLocalISOString() {
+      const tzOffset = (new Date()).getTimezoneOffset() * 60000; // offset in ms
+      return (new Date(Date.now() - tzOffset)).toISOString().slice(0, 19); // remove .000Z
+    }
+    const handleSubmit = async () => {
+      // if (!word.word.trim()) {
+      //   return alert("Please enter a word.");
+      // }
+    
+      // Cập nhật thời gian chỉnh sửa cuối cùng
+      const newWord = { ...word, lastModified: getLocalISOString(), id: id};
+    
+      try {
+        console.log(newWord.id)
+        console.log(newWord.word)
+        console.log(newWord.priority)
+        console.log(newWord.lastModified)
+        console.log(newWord.description)
+        const status = await createWord(newWord); // Gọi API để tạo từ mới
+        
+        if (status === 201) {
+          alert("Word added successfully!");
+          onAdd(newWord); // Gọi callback để cập nhật danh sách từ vựng
+          onClose(); // Đóng dialog sau khi thêm
+        } else {
+          alert("Failed to add word. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error adding word:", error);
+        alert("An error occurred while adding the word. Please try again.");
+      }
+    };
 
   return (
     isOpen && (
@@ -37,26 +59,32 @@ const DialogAddNew = ({ isOpen, onClose, onAdd }) => {
           <input
             type="text"
             className="w-full border p-2 rounded mb-3"
-            value={word}
-            onChange={(e) => setWord(e.target.value)}
+            value={word.word}
+            onChange={(e) =>
+              setWord((prev) => ({ ...prev, word: e.target.value }))
+            }
           />
 
           <Label>Priority</Label>
           <select
             className="w-full border p-2 rounded mb-3"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+            value={word.priority}
+            onChange={(e) =>
+              setWord((prev) => ({ ...prev, priority: e.target.value }))
+            }
           >
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
           </select>
 
           <Label>Description</Label>
           <textarea
             className="w-full border p-2 rounded mb-4"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={word.description}
+            onChange={(e) =>
+              setWord((prev) => ({ ...prev, description: e.target.value }))
+            }
           ></textarea>
 
           <div className="flex justify-end gap-3">

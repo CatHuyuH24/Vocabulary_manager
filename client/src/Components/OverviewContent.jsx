@@ -5,6 +5,15 @@ import Button from "./Button";
 const OverviewContent = ({ words }) => {
   const navigate = useNavigate(); // ✅ Dùng useNavigate thay vì useLocation
 
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    return new Intl.DateTimeFormat('vi-VN', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+      timeZone: 'Asia/Ho_Chi_Minh',
+    }).format(date);
+  }
+
   const onDelete = (id) => {
     alert("Are you sure you want to delete this word?");
     // TODO: Xử lý xóa từ vựng ở đây
@@ -24,7 +33,7 @@ const OverviewContent = ({ words }) => {
         <thead>
           <tr className="bg-[#DEB887] text-white text-xl uppercase">
             <th className="p-3 text-left">Word</th>
-            <th className="p-3 text-left">Date</th>
+            <th className="p-3 text-left">Last mofified date</th>
             <th className="p-3 text-left">Priority</th>
             <th className="p-3 text-center">Feature</th>
           </tr>
@@ -38,21 +47,21 @@ const OverviewContent = ({ words }) => {
               } hover:bg-[#BBDEFB]`}
             >
               <td className="p-3">{word.word}</td>
-              <td className="p-3">{word.date}</td>
+              <td className="p-3">{formatDate(word.lastModified)}</td>
               <td className="p-3">
                 <span
                   className={`
               px-3 py-1 rounded-full text-sm font-semibold
               ${
-                word.priority === "High"
+                word.priority === 1
                   ? "bg-[#EF5350] text-white"
-                  : word.priority === "Medium"
+                  : word.priority === 2
                   ? "bg-[#FFCA28] text-black"
                   : "bg-[#66BB6A] text-white"
               }
             `}
                 >
-                  {word.priority}
+                  {word.priority === 1? "High": word.priority === 2? "Medium": "Low" }
                 </span>
               </td>
               <td className="p-3 flex justify-center gap-3">
