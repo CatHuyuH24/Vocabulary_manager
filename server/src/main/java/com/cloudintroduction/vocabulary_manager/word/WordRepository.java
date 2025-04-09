@@ -1,6 +1,5 @@
 package com.cloudintroduction.vocabulary_manager.word;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -94,11 +93,7 @@ public class WordRepository {
                             "lastModified", AttributeValue.builder().s(word.lastModified().toString()).build(),
                             "priority", AttributeValue.builder().n(String.valueOf(word.priority())).build()))
                     .build();
-            logger.error("DU ME ME: " + Integer.toString(word.id()));
-            logger.error("DU ME ME: " + word.word());
-            logger.error("DU ME ME: " + word.description());
-            logger.error("DU ME ME: " + Integer.toString(word.priority()));
-            logger.error("DU ME ME: " + word.lastModified());
+
             dynamoDbClient.putItem(putItemRequest);
         } catch (DynamoDbException e) {
             logger.error("WordRepository: Exception occurred while creating a new word: {}", e.getMessage());

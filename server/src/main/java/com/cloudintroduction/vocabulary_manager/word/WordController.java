@@ -64,7 +64,6 @@ public class WordController {
     @PostMapping("")
     void createNewWord(@RequestBody WordDTO wordDTO) {
         try {
-            logger.info("DU MA ID: " + Integer.toString(wordDTO.id()));
             wordRepository.createWord(wordDTO.toWord()); // Convert WordDTO to Word
         } catch (IllegalArgumentException e) {
             logger.error("WordController: {}", e.getMessage());
