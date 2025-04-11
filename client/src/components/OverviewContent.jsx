@@ -52,9 +52,9 @@ const OverviewContent = ({ words, onDeleteWord }) => {
       <table className="w-full border-collapse rounded-md overflow-hidden shadow-md">
         <thead>
           <tr className="bg-[#DEB887] text-white sm:text-sm lg:text-xl uppercase">
+            <th className="p-3 text-left">Priority</th>
             <th className="p-3 text-left">Word</th>
             <th className="p-3 text-left">Last modified date</th>
-            <th className="p-3 text-left">Priority</th>
             <th className="p-3 text-center">Actions</th>
           </tr>
         </thead>
@@ -62,16 +62,14 @@ const OverviewContent = ({ words, onDeleteWord }) => {
           {words.map((word, index) => (
             <tr
               key={word.id}
-              className={`text-left font-play sm:text-sm lg:text-lg transition-all ${
+              className={`text-left font-play text-sm md:text-lg transition-all ${
                 index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#FFEBCD]'
               } hover:bg-[#BBDEFB]`}
             >
-              <td className="p-3 font-extrabold">{word.word}</td>
-              <td className="p-3">{formatDate(word.lastModified)}</td>
               <td className="p-3">
                 <span
                   className={`
-              px-3 py-1 rounded-full text-sm font-semibold
+              px-3 py-1 rounded-full font-bold
               ${
                 word.priority === 1
                   ? 'bg-[#EF5350] text-white'
@@ -88,6 +86,14 @@ const OverviewContent = ({ words, onDeleteWord }) => {
                     : 'Low'}
                 </span>
               </td>
+              <td
+                className="p-3 text-lg lg:text-3xl truncate"
+                style={{ maxWidth: '30vw' }}
+              >
+                {word.word}
+              </td>
+              <td className="p-3">{formatDate(word.lastModified)}</td>
+
               <td className="p-3 flex justify-center gap-3">
                 <button
                   onClick={() => SeeVoca(word.id)}

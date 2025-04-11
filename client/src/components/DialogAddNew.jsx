@@ -34,14 +34,17 @@ const DialogAddNew = ({ isOpen, onClose, onAdd }) => {
       console.log(newWord.priority);
       console.log(newWord.lastModified);
       console.log(newWord.description);
-      const status = await createWord(newWord); // Gọi API để tạo từ mới
+      const response = await createWord(newWord); // Gọi API để tạo từ mới
 
-      if (status === 201) {
+      if (response.status == 201) {
         alert('Word added successfully!');
-        onAdd(newWord);
         onClose();
+        const newlyCreatedID = await response.json();
+        const wordWithId = { ...newWord, id: Number(newlyCreatedID) };
 
-        // reset to default
+        onAdd(wordWithId);
+
+        // reset the dialog box to default
         setWord({
           id: null,
           word: '',
@@ -92,6 +95,7 @@ const DialogAddNew = ({ isOpen, onClose, onAdd }) => {
           <Label>Description</Label>
           <textarea
             className="w-full border p-2 rounded mb-4"
+            style={{ height: '30vh' }}
             value={word.description}
             onChange={(e) =>
               setWord((prev) => ({ ...prev, description: e.target.value }))

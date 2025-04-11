@@ -163,7 +163,7 @@ const OverviewVocabulary = () => {
             Filter by Date and Priority
           </Button>
           <Button color="gray" onClick={handleClearAllFilters}>
-            Clear
+            Clear all filters
           </Button>
         </div>
       </div>
