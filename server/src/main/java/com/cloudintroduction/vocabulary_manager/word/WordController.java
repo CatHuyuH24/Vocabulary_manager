@@ -62,9 +62,12 @@ public class WordController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void createNewWord(@RequestBody WordDTO wordDTO) {
+    int createNewWord(@RequestBody WordDTO wordDTO) {
         try {
-            wordRepository.createWord(wordDTO.toWordToBeCreated());
+            Word createdWord = wordDTO.toWordToBeCreatedWithUniqueID();// the new id assignment happens
+                                                                       // transparently here
+            wordRepository.createWord(createdWord);
+            return createdWord.id();
         } catch (IllegalArgumentException e) {
             logger.error("WordController: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());

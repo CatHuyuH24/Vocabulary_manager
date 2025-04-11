@@ -47,7 +47,7 @@ export const createWord = async (word) => {
     throw new Error(`Failed to create word`);
   }
 
-  return res.status;
+  return res;
 };
 
 export const deleteWord = async (id) => {

@@ -17,7 +17,7 @@ public record WordDTO(
         return new Word(id, word, description, lastModified, priority);
     }
 
-    public Word toWordToBeCreated() {
+    public Word toWordToBeCreatedWithUniqueID() {
         Counters counter = ApplicationContextProvider.getBean(Counters.class); // Retrieve Counter bean
         int nextId = counter.incToNextWordIdAndReturn();
         return new Word(nextId, word, description, lastModified, priority);

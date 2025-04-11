@@ -25,13 +25,16 @@ const OverviewVocabulary = () => {
   }, []);
 
   // Lưu số lượng từ vào localStorage
-  localStorage.setItem('Amount', words.length);
+  // localStorage.setItem('Amount', allWords.length);
 
   const addWord = (newWord) => {
-    setWords([...words, newWord]);
+    const updatedWords = [...allWords, newWord];
+    setWords(updatedWords);
+    setAllWords(updatedWords);
+    // localStorage.setItem('Amount', allWords.length);
   };
 
-  const handleFilter = () => {
+  const handleDateFilter = () => {
     // Lọc các từ vựng có `lastModified` nằm trong khoảng thời gian
     const filteredWords = allWords.filter((word) => {
       const lastModifiedDate = new Date(word.lastModified);
@@ -52,27 +55,67 @@ const OverviewVocabulary = () => {
     setWords(filteredWords);
   };
 
+  const handleClearAllFilters = () => {
+    setWords(allWords);
+    setStartDate(''); // Reset startDate to an empty string
+    setEndDate(''); // Reset endDate to an empty string
+    setPriority('0'); // Reset priority to "All" (value "0")
+  };
+
+  const handleBothFilters = () => {
+    const filteredWords = allWords.filter((word) => {
+      const lastModifiedDate = new Date(word.lastModified);
+      const start = startDate
+        ? new Date(startDate).toLocaleDateString('en-GB')
+        : null;
+      const end = endDate
+        ? new Date(endDate).toLocaleDateString('en-GB')
+        : null;
+
+      const isWithinDateRange =
+        (!start || lastModifiedDate.toLocaleDateString('en-GB') >= start) &&
+        (!end || lastModifiedDate.toLocaleDateString('en-GB') <= end);
+
+      const matchesPriority =
+        !priority || priority == '0' || word.priority == Number(priority);
+
+      return isWithinDateRange && matchesPriority;
+    });
+
+    setWords(filteredWords);
+  };
   const handlePriorityFilter = () => {
     if (!priority) return;
-    if (priority == Number('0')) setWords(allWords);
+    if (priority == Number('0')) {
+      setWords(allWords);
+    } else {
+      const filteredWords = allWords.filter(
+        (word) => word.priority == Number(priority)
+      );
+      setWords(filteredWords);
+    }
+  };
 
-    const filteredWords = allWords.filter(
-      (word) => word.priority == Number(priority)
-    );
-    setWords(filteredWords);
+  const handleDeleteWord = (deletedWordId) => {
+    const updatedWords = allWords.filter((word) => word.id !== deletedWordId);
+    setWords(updatedWords);
+    setAllWords(updatedWords);
+    // localStorage.setItem('Amount', updatedWords.length);
   };
 
   return (
     <div className="p-6">
-      <div className="flex gap-4 mb-4 items-center flex-wrap">
-        <Button onClick={() => setDialogOpen(true)} color="green">
-          + Add new
-        </Button>
-        <DialogAddNew
-          isOpen={isDialogOpen}
-          onClose={() => setDialogOpen(false)}
-          onAdd={addWord}
-        />
+      <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+        <div className="inline">
+          <Button onClick={() => setDialogOpen(true)} color="green">
+            + Add new
+          </Button>
+          <DialogAddNew
+            isOpen={isDialogOpen}
+            onClose={() => setDialogOpen(false)}
+            onAdd={addWord}
+          />
+        </div>
 
         {/* 👇 Bộ lọc ngày bắt đầu và kết thúc */}
         <div className="flex items-center gap-2">
@@ -84,9 +127,7 @@ const OverviewVocabulary = () => {
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
-        </div>
 
-        <div className="flex items-center gap-2">
           <label htmlFor="end-date">To:</label>
           <input
             type="date"
@@ -95,29 +136,39 @@ const OverviewVocabulary = () => {
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
+
+          <Button onClick={handleDateFilter} color="purple">
+            Filter By Date
+          </Button>
         </div>
 
-        <Button onClick={handleFilter} color="purple">
-          Filter By Date
-        </Button>
+        <div className="md:inline-flex md:ml-3 items-center gap-2">
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="inline-flex gap-2 p-2 items-center border rounded"
+          >
+            <option value="0">All</option>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
+          </select>
 
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="0">-- Select Priority --</option>
-          <option value="1">High</option>
-          <option value="2">Medium</option>
-          <option value="3">Low</option>
-        </select>
-
-        <Button onClick={handlePriorityFilter} color="purple">
-          Filter By Priority
-        </Button>
+          <Button onClick={handlePriorityFilter} color="purple">
+            Filter By Priority
+          </Button>
+        </div>
+        <div className="inline-flex gap-5">
+          <Button color="blue" onClick={handleBothFilters}>
+            Filter by Date and Priority
+          </Button>
+          <Button color="gray" onClick={handleClearAllFilters}>
+            Clear
+          </Button>
+        </div>
       </div>
 
-      <OverviewContent words={words} />
+      <OverviewContent words={words} onDeleteWord={handleDeleteWord} />
     </div>
   );
 };

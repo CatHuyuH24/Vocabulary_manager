@@ -1,51 +1,62 @@
-import React, { useState } from "react";
-import Label from "./Label";
-import Button from "./Button";
-import { createWord } from "../Services";
+import React, { useState } from 'react';
+import Label from './Label';
+import Button from './Button';
+import { createWord } from '../Services';
 
 const DialogAddNew = ({ isOpen, onClose, onAdd }) => {
-  const id = parseInt(localStorage.getItem("Amount"), 10) || 0;
   // console.log(typeof(id));/
-    const [word, setWord] = useState({
-      id: id,
-      word: "",
-      description: "",
-      lastModified: "",
-      priority: "3",
-    });
+  const [word, setWord] = useState({
+    id: null,
+    word: '',
+    description: '',
+    lastModified: '',
+    priority: '3',
+  });
 
-    function getLocalISOString() {
-      const tzOffset = (new Date()).getTimezoneOffset() * 60000; // offset in ms
-      return (new Date(Date.now() - tzOffset)).toISOString().slice(0, 19); // remove .000Z
-    }
-    const handleSubmit = async () => {
-      // if (!word.word.trim()) {
-      //   return alert("Please enter a word.");
-      // }
-    
-      // Cập nhật thời gian chỉnh sửa cuối cùng
-      const newWord = { ...word, lastModified: getLocalISOString(), id: id};
-    
-      try {
-        console.log(newWord.id)
-        console.log(newWord.word)
-        console.log(newWord.priority)
-        console.log(newWord.lastModified)
-        console.log(newWord.description)
-        const status = await createWord(newWord); // Gọi API để tạo từ mới
-        
-        if (status === 201) {
-          alert("Word added successfully!");
-          onAdd(newWord); // Gọi callback để cập nhật danh sách từ vựng
-          onClose(); // Đóng dialog sau khi thêm
-        } else {
-          alert("Failed to add word. Please try again.");
-        }
-      } catch (error) {
-        console.error("Error adding word:", error);
-        alert("An error occurred while adding the word. Please try again.");
-      }
+  function getLocalISOString() {
+    const tzOffset = new Date().getTimezoneOffset() * 60000; // offset in ms
+    return new Date(Date.now() - tzOffset).toISOString().slice(0, 19); // remove .000Z
+  }
+  const handleSubmit = async () => {
+    // if (!word.word.trim()) {
+    //   return alert("Please enter a word.");
+    // }
+
+    // Cập nhật thời gian chỉnh sửa cuối cùng
+    const newWord = {
+      ...word,
+      lastModified: getLocalISOString(),
+      priority: Number(word.priority), // convert to number
     };
+
+    try {
+      console.log(newWord.word);
+      console.log(newWord.priority);
+      console.log(newWord.lastModified);
+      console.log(newWord.description);
+      const status = await createWord(newWord); // Gọi API để tạo từ mới
+
+      if (status === 201) {
+        alert('Word added successfully!');
+        onAdd(newWord);
+        onClose();
+
+        // reset to default
+        setWord({
+          id: null,
+          word: '',
+          description: '',
+          lastModified: '',
+          priority: '3',
+        });
+      } else {
+        alert('Failed to add word. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error adding word:', error);
+      alert('An error occurred while adding the word. Please try again.');
+    }
+  };
 
   return (
     isOpen && (
