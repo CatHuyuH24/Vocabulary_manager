@@ -13,7 +13,7 @@ This guide will help you set up a local DynamoDB environment for your Java Sprin
 Open PowerShell and run:
 
 ```powershell
-docker run -d -p 8000:8000 --name dynamodb-local amazon/dynamodb-local:latest
+docker compose -f docker-compose.local.yml up
 ```
 
 Check that the container is running:
@@ -32,7 +32,7 @@ aws configure
 Enter the following values:
 - AWS Access Key ID: `dummy`
 - AWS Secret Access Key: `dummy`
-- Default region name: `us-east-1`
+- Default region name: `ap-southeast-1`
 - Default output format: `json`
 
 ## Step 3: Create Required Tables

@@ -10,6 +10,7 @@ server/.project
 server/.settings
 server/.springBeans
 server/.sts4-cache
+server/target
 
 # Client-specific ignores
 client/node_modules/
