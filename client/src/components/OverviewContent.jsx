@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { deleteWord } from '../Services';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { deleteWord } from "../Services";
 const OverviewContent = ({ words, onDeleteWord }) => {
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
@@ -9,15 +9,15 @@ const OverviewContent = ({ words, onDeleteWord }) => {
   function formatDate(isoString) {
     const date = new Date(isoString);
     const options = {
-      hour: '2-digit',
-      minute: '2-digit',
-      hourCycle: 'h23', // 24-hour format
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      timeZone: 'Asia/Ho_Chi_Minh',
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23", // 24-hour format
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      timeZone: "Asia/Ho_Chi_Minh",
     };
-    return new Intl.DateTimeFormat('en-GB', options).format(date);
+    return new Intl.DateTimeFormat("en-GB", options).format(date);
   }
 
   const confirmDelete = (id) => {
@@ -28,14 +28,14 @@ const OverviewContent = ({ words, onDeleteWord }) => {
   const onDelete = async () => {
     try {
       await deleteWord(selectedWordId); // Call the deleteWord service
-      alert('Word deleted successfully!');
+      alert("Word deleted successfully!");
       setModalOpen(false);
       onDeleteWord(selectedWordId);
       setSelectedWordId(null);
       // Optionally, refresh the list or trigger a re-render
     } catch (error) {
-      console.error('Failed to delete the word:', error);
-      alert('An error occurred while deleting the word. Please try again.');
+      console.error("Failed to delete the word:", error);
+      alert("An error occurred while deleting the word. Please try again.");
     }
   };
 
@@ -51,7 +51,7 @@ const OverviewContent = ({ words, onDeleteWord }) => {
     <div className="mt-4">
       <table className="w-full border-collapse rounded-md overflow-hidden shadow-md">
         <thead>
-          <tr className="bg-[#DEB887] text-white sm:text-sm lg:text-xl uppercase">
+          <tr className="bg-[#DEB887] text-white text-[10px] sm:text-sm md:text-base lg:text-xl uppercase">
             <th className="p-3 text-left">Priority</th>
             <th className="p-3 text-left">Word</th>
             <th className="p-3 text-left">Last modified date</th>
@@ -63,38 +63,38 @@ const OverviewContent = ({ words, onDeleteWord }) => {
             <tr
               key={word.id}
               className={`text-left font-play text-sm md:text-lg transition-all ${
-                index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#FFEBCD]'
+                index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#FFEBCD]"
               } hover:bg-[#BBDEFB]`}
             >
-              <td className="p-3">
+              <td className="p-3 text-xs sm:text-sm md:text-base lg:text-lg">
                 <span
                   className={`
               px-3 py-1 rounded-full font-bold
               ${
                 word.priority === 1
-                  ? 'bg-[#EF5350] text-white'
+                  ? "bg-[#EF5350] text-white"
                   : word.priority === 2
-                  ? 'bg-[#FFCA28] text-black'
-                  : 'bg-[#66BB6A] text-white'
+                  ? "bg-[#FFCA28] text-black"
+                  : "bg-[#66BB6A] text-white"
               }
             `}
                 >
                   {word.priority === 1
-                    ? 'High'
+                    ? "High"
                     : word.priority === 2
-                    ? 'Medium'
-                    : 'Low'}
+                    ? "Medium"
+                    : "Low"}
                 </span>
               </td>
               <td
-                className="p-3 text-lg lg:text-3xl truncate"
-                style={{ maxWidth: '30vw' }}
+                className="p-3 text-xs sm:text-sm md:text-base lg:text-lg truncate"
+                style={{ maxWidth: "30vw" }}
               >
                 {word.word}
               </td>
               <td className="p-3">{formatDate(word.lastModified)}</td>
 
-              <td className="p-3 flex justify-center gap-3">
+              <td className="p-3 flex justify-center gap-3 text-sm sm:text-base md:text-lg">
                 <button
                   onClick={() => SeeVoca(word.id)}
                   className="bg-[#1976D2] text-white p-2 rounded-full transition-transform transform hover:scale-110 hover:bg-[#1565C0]"
@@ -122,7 +122,7 @@ const OverviewContent = ({ words, onDeleteWord }) => {
       {/* Confirmation Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg text-center">
+          <div className="bg-white p-6 rounded shadow-lg text-center text-sm sm:text-base md:text-lg">
             <h2 className="text-lg font-bold mb-4">Confirm Deletion</h2>
             <p>Are you sure you want to delete this word?</p>
             <div className="mt-4 flex justify-center gap-4">

@@ -13,9 +13,9 @@ const Button = ({ onClick, children, color = 'blue' }) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2  rounded ${
-        colors[color] || colors.blue
-      } transition duration-300`}
+      className={`text-xs sm:text-sm md:text-base 
+              px-2 py-1 sm:px-3 sm:py-2 md:px-4 md:py-2 
+              rounded ${colors[color] || colors.blue} transition duration-300`}
     >
       {children}
     </button>

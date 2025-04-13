@@ -118,25 +118,34 @@ const OverviewVocabulary = () => {
         </div>
 
         {/* 👇 Bộ lọc ngày bắt đầu và kết thúc */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="start-date">From:</label>
-          <input
-            type="date"
-            id="start-date"
-            className="border rounded p-1"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+        <div className="flex flex-col xs:flex-row md:items-center gap-2">
+          <div className="flex flex-col xs:flex-row gap-2 items-center text-xs sm:text-sm md:text-base">
+            <div className="flex sm:flex-row gap-2 items-center">
+              <label htmlFor="start-date" className="min-w-[50px]">
+                From:
+              </label>
+              <input
+                type="date"
+                id="start-date"
+                className="border rounded p-1 w-full sm:w-auto"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
 
-          <label htmlFor="end-date">To:</label>
-          <input
-            type="date"
-            id="end-date"
-            className="border rounded p-1"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-
+            <div className="flex sm:flex-row gap-1 items-center">
+              <label htmlFor="end-date" className="min-w-[40px]">
+                To:
+              </label>
+              <input
+                type="date"
+                id="end-date"
+                className="border rounded p-1 w-full sm:w-auto"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          </div>
           <Button onClick={handleDateFilter} color="purple">
             Filter By Date
           </Button>
@@ -146,7 +155,8 @@ const OverviewVocabulary = () => {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="inline-flex gap-2 p-2 items-center border rounded"
+            className="text-xs sm:text-sm md:text-base 
+              px-2 py-1 sm:px-3 sm:py-2 md:px-4 md:py-2 items-center border rounded mr-2"
           >
             <option value="0">All</option>
             <option value="1">High</option>

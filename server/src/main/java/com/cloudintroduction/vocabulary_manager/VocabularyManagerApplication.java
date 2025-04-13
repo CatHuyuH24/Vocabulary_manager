@@ -10,5 +10,4 @@ public class VocabularyManagerApplication {
 		SpringApplication.run(VocabularyManagerApplication.class, args);
 		System.out.println("Server started...");
 	}
-
 }
