@@ -62,11 +62,11 @@ const OverviewContent = ({ words, onDeleteWord }) => {
           {words.map((word, index) => (
             <tr
               key={word.id}
-              className={`text-left font-play text-sm md:text-lg transition-all ${
+              className={`text-left font-play text-[10px] sm:text-sm md:text-base lg:text-xl transition-all ${
                 index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#FFEBCD]"
               } hover:bg-[#BBDEFB]`}
             >
-              <td className="p-3 text-xs sm:text-sm md:text-base lg:text-lg">
+              <td className="p-3 text-[10px] sm:text-sm md:text-base lg:text-xl">
                 <span
                   className={`
               px-3 py-1 rounded-full font-bold
@@ -87,14 +87,14 @@ const OverviewContent = ({ words, onDeleteWord }) => {
                 </span>
               </td>
               <td
-                className="p-3 text-xs sm:text-sm md:text-base lg:text-lg truncate"
+                className="p-3 text-[10px] sm:text-sm md:text-base lg:text-xl truncate"
                 style={{ maxWidth: "30vw" }}
               >
                 {word.word}
               </td>
               <td className="p-3">{formatDate(word.lastModified)}</td>
 
-              <td className="p-3 flex justify-center gap-3 text-sm sm:text-base md:text-lg">
+              <td className="p-3 flex justify-center gap-3 text-[10px] sm:text-sm md:text-base lg:text-xl">
                 <button
                   onClick={() => SeeVoca(word.id)}
                   className="bg-[#1976D2] text-white p-2 rounded-full transition-transform transform hover:scale-110 hover:bg-[#1565C0]"
